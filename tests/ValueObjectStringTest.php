@@ -14,7 +14,7 @@ final class ValueObjectStringTest extends TestCase
 
         static::assertSame('öäüß', $str . '');
         static::assertSame('öäüß', $str->__toString());
-        static::assertSame('ÖÄÜSS', $str->toUpperCase()->__toString());
+        static::assertSame('!ÖÄÜSS...', $str->toUpperCase()->prepend('!')->append('...')->base64Encode()->base64Decode()->removeXss()->escape()->__toString());
         static::assertSame($str->value(), $str->valueOrThrowException());
     }
 

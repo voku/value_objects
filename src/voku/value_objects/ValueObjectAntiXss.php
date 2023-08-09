@@ -21,7 +21,7 @@ final class ValueObjectAntiXss extends ValueObjectString
      */
     public static function create($value): self
     {
-        $value = self::anti_xss($value);
+        $value = self::anti_xss((string)$value);
 
         return parent::create($value);
     }
@@ -30,10 +30,8 @@ final class ValueObjectAntiXss extends ValueObjectString
      * Simple Anti-XSS for html-output.
      *
      * take a look at "https://github.com/voku/anti-xss" for more complex XSS attacks
-     *
-     * @param string $string
      */
-    private static function anti_xss($string, bool $asHtmlOutput = true): string
+    private static function anti_xss(string $string, bool $asHtmlOutput = true): string
     {
         static $ANTI_XSS = null;
         if ($ANTI_XSS === null) {

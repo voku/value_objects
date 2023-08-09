@@ -15,7 +15,17 @@ final class ValueObjectBoolTest extends TestCase
 
         // --
 
+        $bool = ValueObjectBool::createTrue();
+        static::assertTrue($bool->getValue());
+
+        // --
+
         $bool = ValueObjectBool::create('0');
+        static::assertFalse($bool->getValue());
+
+        // --
+
+        $bool = ValueObjectBool::createFalse();
         static::assertFalse($bool->getValue());
 
         // --

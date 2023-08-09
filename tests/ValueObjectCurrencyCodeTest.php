@@ -1,17 +1,19 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectCurrency;
+use voku\value_objects\ValueObjectCurrencyCode;
 
 /**
  * @internal
  */
-final class ValueObjectCurrencyTest extends TestCase
+final class ValueObjectCurrencyCodeTest extends TestCase
 {
     public function testSimple(): void
     {
-        $str = ValueObjectCurrency::create('EUR');
+        $str = ValueObjectCurrencyCode::create('EUR');
 
+        static::assertTrue($str->isEquals('EUR'));
+        static::assertSame('eur', $str->toLowerCase()->value());
         static::assertSame('EUR', $str . '');
         static::assertSame('EUR', $str->__toString());
         static::assertSame($str->value(), $str->valueOrThrowException());
@@ -21,6 +23,6 @@ final class ValueObjectCurrencyTest extends TestCase
     {
         $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
         $this->expectExceptionMessage('The value "FOOBAR" is not correct for: voku\value_objects\ValueObjectCurrency');
-        @ValueObjectCurrency::create('FOOBAR');
+        @ValueObjectCurrencyCode::create('FOOBAR');
     }
 }

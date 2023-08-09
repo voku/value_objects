@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
+use DateTimeImmutable;
+use DateTimeZone;
+
 /**
  * @extends AbstractValueObject<string>
  *
@@ -36,8 +39,8 @@ final class ValueObjectDate extends AbstractValueObject
         return $this->getDateTime()->format($format);
     }
 
-    public function getDateTime(): \DateTimeImmutable
+    public function getDateTime(?DateTimeZone $timezone = null): DateTimeImmutable
     {
-        return new \DateTimeImmutable((string) $this->value());
+        return new DateTimeImmutable((string) $this->value(), $timezone);
     }
 }

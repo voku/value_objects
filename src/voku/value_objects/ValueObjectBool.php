@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
+use voku\value_objects\exceptions\InvalidValueObjectException;
+
 /**
  * @extends AbstractValueObject<bool>
  *
@@ -15,6 +17,8 @@ final class ValueObjectBool extends AbstractValueObject
      * {@inheritdoc}
      *
      * @phpstan-param 0|'0'|''|1|'1'|'f'|'t'|'false'|'true'|false|true $value
+     *
+     * @throws InvalidValueObjectException
      */
     public static function create($value): self
     {

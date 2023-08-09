@@ -12,7 +12,7 @@ use function strtoupper;
  *
  * @immutable
  */
-final class ValueObjectCurrency extends AbstractValueObject
+final class ValueObjectCurrencyCode extends AbstractValueObject
 {
     /**
      * @param self|string $other
@@ -83,6 +83,10 @@ final class ValueObjectCurrency extends AbstractValueObject
         }
 
         return parent::validate($value);
+    }
+
+    public function getCurrencyName(): ?string {
+        return self::getCurrencyNames()[$this->value()] ?? null;
     }
 
     /**

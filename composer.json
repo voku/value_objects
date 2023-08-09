@@ -1,0 +1,40 @@
+{
+  "name": "voku/value_objects",
+  "type": "library",
+  "description": "Value Objects",
+  "homepage": "https://github.com/voku/value_objects",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lars Moelleken",
+      "email": "lars@moelleken.org",
+      "homepage": "https://moelleken.org",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "8.0.* || 8.1.* || 8.2.*",
+    "ext-intl": "*",
+    "voku/stringy": "~6.5.3"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "1.10.*",
+    "phpunit/phpunit": "9.6.*",
+    "php-cs-fixer/shim": "v3.22.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "voku\\value_objects\\": "src/voku/value_objects/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse",
+    "phpcsfixer": "php-cs-fixer fix --config=\"phpcs.php_cs\" --verbose src"
+  }
+}

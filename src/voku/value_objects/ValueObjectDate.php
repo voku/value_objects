@@ -11,7 +11,6 @@ namespace voku\value_objects;
  */
 final class ValueObjectDate extends AbstractValueObject
 {
-
     /**
      * {@inheritdoc}
      */
@@ -20,7 +19,7 @@ final class ValueObjectDate extends AbstractValueObject
         try {
             $dateTime = new \DateTimeImmutable($value . ' 00:00:00');
         } catch (\Exception $e) {
-            trigger_error('wrong date (required format: Y-m-d): ' . $value, E_USER_WARNING);
+            trigger_error('wrong date (required format: Y-m-d): ' . $value . ' | ' . $e->__toString(), \E_USER_WARNING);
 
             return false;
         }
@@ -39,7 +38,6 @@ final class ValueObjectDate extends AbstractValueObject
 
     public function getDateTime(): \DateTimeImmutable
     {
-        return new \DateTimeImmutable((string)$this->value());
+        return new \DateTimeImmutable((string) $this->value());
     }
-
 }

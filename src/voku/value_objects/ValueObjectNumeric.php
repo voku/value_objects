@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
+use function ob_get_flush;
+use function ob_start;
+use const PHP_ROUND_HALF_UP;
 use Throwable;
 use voku\value_objects\exceptions\InvalidValueObjectException;
 use voku\value_objects\exceptions\ValueObjectNumericException;
 use voku\value_objects\utils\MathUtils;
-use function call_user_func_array;
-use function ob_get_flush;
-use function ob_start;
-use const PHP_ROUND_HALF_UP;
 
 /**
  * @extends AbstractValueObject<numeric-string>
@@ -20,7 +19,6 @@ use const PHP_ROUND_HALF_UP;
  */
 final class ValueObjectNumeric extends AbstractValueObject
 {
-
     private const OPERATION_ADD = 'add';
 
     private const OPERATION_SUB = 'sub';
@@ -69,8 +67,7 @@ final class ValueObjectNumeric extends AbstractValueObject
         $value,
         string $activeLocale = 'en-US',
         int $scale = 10
-    ): static
-    {
+    ): static {
         $valueParsed = MathUtils::i18n_number_parse($value, $activeLocale, null);
         if ($valueParsed === null) {
             throw new InvalidValueObjectException('could not parse value: ' . $value . ' | locale: ' . $activeLocale);
@@ -120,11 +117,11 @@ final class ValueObjectNumeric extends AbstractValueObject
         try {
             $return = MathUtils::numericToNumericString($num);
         } catch (Throwable $e) {
-            return (string)$numBackup;
+            return (string) $numBackup;
         }
 
         if (!MathUtils::is_numeric($return)) {
-            return (string)$numBackup;
+            return (string) $numBackup;
         }
 
         return $return;
@@ -139,8 +136,8 @@ final class ValueObjectNumeric extends AbstractValueObject
     }
 
     /**
-     * @param null|numeric|self                       $num
-     * @param null|numeric|self                       $mod
+     * @param numeric|self|null                       $num
+     * @param numeric|self|null                       $mod
      *
      * @return numeric-string
      *
@@ -150,9 +147,8 @@ final class ValueObjectNumeric extends AbstractValueObject
         string $operation,
                $num = null,
                $mod = null,
-        ?int   $scale = null
-    )
-    {
+        ?int $scale = null
+    ) {
         $left = $this->getValue();
         $right = $num instanceof self ? $num->getValue() : self::filterNumeric($num);
         $mod = $mod instanceof self ? $mod->getValue() : self::filterNumeric($mod);
@@ -164,19 +160,23 @@ final class ValueObjectNumeric extends AbstractValueObject
         switch ($operation) {
             case self::OPERATION_POWMOD:
                 $args = [$left, $right, $mod, $scaleCheck];
+
                 break;
             case self::OPERATION_SQRT:
                 $args = [$left, $scaleCheck];
+
                 break;
             case self::OPERATION_MOD:
                 $args = [$left, $right];
+
                 break;
             default:
                 $args = [$left, $right, $scaleCheck];
+
                 break;
         }
         ob_start();
-        $resultScaleCheck = call_user_func_array($func, $args);
+        $resultScaleCheck = \call_user_func_array($func, $args);
         $error = ob_get_flush();
         if ($error) {
             throw new ValueObjectNumericException($error);
@@ -184,23 +184,27 @@ final class ValueObjectNumeric extends AbstractValueObject
 
         // ------------------------------------------------------
 
-        $scale = (int)($scale ?? $this->scale);
+        $scale = (int) ($scale ?? $this->scale);
         switch ($operation) {
             case self::OPERATION_POWMOD:
                 $args = [$left, $right, $mod, $scale];
+
                 break;
             case self::OPERATION_SQRT:
                 $args = [$left, $scale];
+
                 break;
             case self::OPERATION_MOD:
                 $args = [$left, $right];
+
                 break;
             default:
                 $args = [$left, $right, $scale];
+
                 break;
         }
         ob_start();
-        $result = call_user_func_array($func, $args);
+        $result = \call_user_func_array($func, $args);
         $error = ob_get_flush();
         if ($error) {
             throw new ValueObjectNumericException($error);
@@ -211,11 +215,11 @@ final class ValueObjectNumeric extends AbstractValueObject
         if (
             $scale !== 0 // we allow "scale" zero, so that we can cut off everything
             &&
-            (float)$result === 0.0
+            (float) $result === 0.0
             &&
-            (float)$resultScaleCheck > 0
+            (float) $resultScaleCheck > 0
         ) {
-            trigger_error('scale error: ' . $func . '|' . print_r($args, true), E_USER_WARNING);
+            trigger_error('scale error: ' . $func . '|' . print_r($args, true), \E_USER_WARNING);
         }
 
         return $result;
@@ -227,7 +231,7 @@ final class ValueObjectNumeric extends AbstractValueObject
     public function getValue(): string
     {
         /* @phpstan-ignore-next-line | we know that this is numeric-string by definition */
-        return (string)$this;
+        return (string) $this;
     }
 
     /**
@@ -291,7 +295,7 @@ final class ValueObjectNumeric extends AbstractValueObject
     public function round(int $precision = 3, int $mode = PHP_ROUND_HALF_UP): static
     {
         // @codingStandardsIgnoreStart
-        return self::create((string)round((float)$this->value(), $precision, $mode), $this->scale);
+        return self::create((string) round((float) $this->value(), $precision, $mode), $this->scale);
         // @codingStandardsIgnoreEnd
     }
 
@@ -304,15 +308,15 @@ final class ValueObjectNumeric extends AbstractValueObject
     }
 
     /**
-     * @param null|numeric|self $num
+     * @param numeric|self|null $num
      *
      * @phpstan-return 0|1|-1
      */
     protected function compare($num, ?int $scale = null): int
     {
-        $result = (int)$this->performOperation(self::OPERATION_COMPARE, $num, null, $scale);
+        $result = (int) $this->performOperation(self::OPERATION_COMPARE, $num, null, $scale);
 
-        assert($result === 0 || $result === 1 || $result === -1);
+        \assert($result === 0 || $result === 1 || $result === -1);
 
         return $result;
     }
@@ -351,7 +355,7 @@ final class ValueObjectNumeric extends AbstractValueObject
 
     public function toFloat(): float
     {
-        return (float)$this->getValue();
+        return (float) $this->getValue();
     }
 
     /**
@@ -359,13 +363,12 @@ final class ValueObjectNumeric extends AbstractValueObject
      */
     public function i18n_number_format(
         string $activeLocale = 'en-US',
-        int    $precision = 2,
-        bool   $showMore = false,
-        bool   $sendWarningOnError = true
-    )
-    {
+        int $precision = 2,
+        bool $showMore = false,
+        bool $sendWarningOnError = true
+    ) {
         return MathUtils::i18n_number_format(
-            (string)$this->value(),
+            (string) $this->value(),
             $activeLocale,
             $precision,
             $showMore,
@@ -378,11 +381,10 @@ final class ValueObjectNumeric extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-        if (!MathUtils::is_numeric((string)$value)) {
+        if (!MathUtils::is_numeric((string) $value)) {
             return false;
         }
 
         return parent::validate($value);
     }
-
 }

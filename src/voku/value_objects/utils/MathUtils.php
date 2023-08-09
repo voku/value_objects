@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace voku\value_objects\utils;
 
+use function fmod;
 use NumberFormatter;
+use function round;
 use voku\helper\AntiXSS;
 use voku\helper\UTF8;
 use voku\value_objects\AbstractValueObject;
 use voku\value_objects\ValueObjectInt;
 use voku\value_objects\ValueObjectNumeric;
-use function fmod;
-use function round;
-use function strlen;
 
 final class MathUtils
 {
-
     /**
      * @param numeric|ValueObjectInt|ValueObjectNumeric $numeric
      */
@@ -26,13 +24,13 @@ final class MathUtils
             $numeric = $numeric->getValue();
         }
 
-        if ((int)$numeric === $numeric) {
+        if ((int) $numeric === $numeric) {
             return 0;
         }
 
         $numeric = self::numericToNumericString($numeric);
         if (!self::is_numeric($numeric)) {
-            trigger_error('$numeric is not numeric or has spaces: "' . print_r($numeric, true) . '"', E_USER_WARNING);
+            trigger_error('$numeric is not numeric or has spaces: "' . print_r($numeric, true) . '"', \E_USER_WARNING);
 
             return 0;
         }
@@ -46,7 +44,7 @@ final class MathUtils
             $numeric = rtrim($numeric, '0');
         }
 
-        return strlen($numeric) - $value - 1;
+        return \strlen($numeric) - $value - 1;
     }
 
     /**
@@ -56,29 +54,28 @@ final class MathUtils
      */
     public static function numericToNumericString($numeric): string
     {
-        $string = (string)$numeric;
+        $string = (string) $numeric;
         if ($string === '') {
             return '0';
         }
 
         if (UTF8::str_contains($string, 'E', false) && preg_match('~\.(\d+)E([+-])?(\d+)~i', $string, $matches)) {
             if ($matches[2] === '-') {
-                $decimals = strlen($matches[1]) + (int)$matches[3];
+                $decimals = \strlen($matches[1]) + (int) $matches[3];
             } else {
                 $decimals = 0;
             }
 
-            $string = number_format((float)$string, $decimals, '.', '');
+            $string = number_format((float) $string, $decimals, '.', '');
         }
 
-        assert(is_numeric($string));
+        \assert(is_numeric($string));
 
         return $string;
     }
 
-
     /**
-     * @param scalar $value
+     * @param scalar|null $value
      */
     public static function is_numeric($value, bool $checkForSpaces = false): bool
     {
@@ -86,7 +83,7 @@ final class MathUtils
             return false;
         }
 
-        if ($checkForSpaces && trim((string)$value, ' ') !== (string)$value) {
+        if ($checkForSpaces && trim((string) $value, ' ') !== (string) $value) {
             return false;
         }
 
@@ -101,7 +98,7 @@ final class MathUtils
      * @phpstan-param 1|2|3|4 $mode
      *                              <p>PHP_ROUND_*</p>
      */
-    public static function round($value, int $precision, int $mode = PHP_ROUND_HALF_UP)
+    public static function round($value, int $precision, int $mode = \PHP_ROUND_HALF_UP)
     {
         $value = self::numericToNumericString($value);
 
@@ -122,18 +119,18 @@ final class MathUtils
             $ANTI_XSS = new AntiXSS();
             $ANTI_XSS->removeEvilAttributes(['style']); // allow style-attributes
         }
-        assert($ANTI_XSS instanceof AntiXSS);
+        \assert($ANTI_XSS instanceof AntiXSS);
 
         $antiXssClone = clone $ANTI_XSS;
         /* @noinspection CallableParameterUseCaseInTypeContextInspection */
         $string = $antiXssClone->xss_clean($string);
 
         if ($asHtmlOutput) {
-            $string = UTF8::html_entity_decode((string)$string);
-            $string = UTF8::htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE);
+            $string = UTF8::html_entity_decode((string) $string);
+            $string = UTF8::htmlspecialchars($string, \ENT_QUOTES | \ENT_SUBSTITUTE);
         }
 
-        return (string)$string;
+        return (string) $string;
     }
 
     /**
@@ -163,7 +160,7 @@ final class MathUtils
      * @phpstan-param ''|numeric|AbstractValueObject<numeric>|ValueObjectNumeric $value
      * @phpstan-param int                                                        $precision
      *
-     * @return string|false
+     * @return false|string
      */
     public static function i18n_number_format(
         $value,
@@ -171,8 +168,7 @@ final class MathUtils
         int $precision = 2,
         bool $showMore = false,
         bool $sendWarningOnError = true
-    )
-    {
+    ) {
         $valueOrig = $value;
 
         if ($value instanceof AbstractValueObject) {
@@ -181,7 +177,7 @@ final class MathUtils
         }
 
         if ($precision === -1) {
-            $precision = strlen((string)fmod((float)$value, 1)) - 2;
+            $precision = \strlen((string) fmod((float) $value, 1)) - 2;
             if ($precision < 0) {
                 $precision = 0;
             }
@@ -193,37 +189,37 @@ final class MathUtils
         }
 
         if ($sendWarningOnError && !self::is_numeric($value)) {
-            trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value, E_USER_WARNING);
+            trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value, \E_USER_WARNING);
 
             return false;
         }
 
         if (self::is_numeric_int($value)) {
-            $value = (int)$value;
+            $value = (int) $value;
         } elseif (self::is_numeric($value)) {
-            $value = (float)$value;
+            $value = (float) $value;
         } else {
             if ($sendWarningOnError) {
-                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, E_USER_WARNING);
+                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, \E_USER_WARNING);
             }
 
             return false;
         }
 
         if ($showMore) {
-            $parts = explode('.', (string)$value);
+            $parts = explode('.', (string) $value);
             if (isset($parts[1])) {
                 $fraction = rtrim($parts[1], '0');
-                if (strlen($fraction) > $precision) {
-                    $precision = strlen($fraction);
+                if (\strlen($fraction) > $precision) {
+                    $precision = \strlen($fraction);
                 }
             }
 
-            $valueBackup = (float)$value;
-            $value = round((float)$value, $precision);
+            $valueBackup = (float) $value;
+            $value = round((float) $value, $precision);
             // INFO: do not show zero values if the value is not zero
             while ($valueBackup > 0 && $value === 0.0) {
-                $value = round((float)$valueBackup, ++$precision);
+                $value = round((float) $valueBackup, ++$precision);
             }
         }
 
@@ -233,7 +229,7 @@ final class MathUtils
         $result = $numberFormatter->format($value, NumberFormatter::TYPE_DOUBLE);
         if ($result === false) {
             if ($sendWarningOnError) {
-                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, E_USER_WARNING);
+                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, \E_USER_WARNING);
             }
 
             return false;
@@ -243,16 +239,16 @@ final class MathUtils
     }
 
     /**
-     * @param scalar $value
+     * @param scalar|null $value
      */
     public static function is_numeric_int($value, bool $checkForSpaces = false): bool
     {
         return self::is_numeric($value, $checkForSpaces)
                &&
                (
-                   is_int($value)
+                   \is_int($value)
                    ||
-                   ctype_digit((string)$value)
+                   ctype_digit((string) $value)
                );
     }
 
@@ -269,13 +265,15 @@ final class MathUtils
      * - (string) "16.5"   => "16.5"
      * - (string) "1.000"  => "1"
      *
-     * @param null|string                   $value
-     * @param null|mixed                    $fallback
+     * @param string|null                   $value
+     * @param mixed|null                    $fallback
      *
-     * @return null|mixed|string
+     * @return mixed|string|null
      *
      * @template TiParseNumberFallback
+     *
      * @phpstan-param TiParseNumberFallback $fallback
+     *
      * @phpstan-return numeric-string|TiParseNumberFallback
      */
     public static function i18n_number_parse(
@@ -283,11 +281,10 @@ final class MathUtils
         string $activeLocale = 'en-US',
         $fallback = null,
         bool $sendWarningOnError = true
-    )
-    {
+    ) {
         $valueOrig = $value;
 
-        if (is_string($value)) {
+        if (\is_string($value)) {
             $value = trim(
                 trim($value),
                 ' ^.,€$"\'!%?()[]/\\' // hack for bad inputs
@@ -300,16 +297,16 @@ final class MathUtils
         }
 
         $numberFormatter = new NumberFormatter($activeLocale, NumberFormatter::DECIMAL);
-        $number = (string)$numberFormatter->parse((string)$value, NumberFormatter::TYPE_DOUBLE);
+        $number = (string) $numberFormatter->parse((string) $value, NumberFormatter::TYPE_DOUBLE);
 
         if (self::is_numeric($number)) {
-            assert(is_numeric($number));
+            \assert(is_numeric($number));
 
             return $number;
         }
 
         if ($sendWarningOnError) {
-            trigger_error('Wrong input for "i18n_number_parse()", please use a non-numeric value: ' . $value . ' | ' . $valueOrig, E_USER_WARNING);
+            trigger_error('Wrong input for "i18n_number_parse()", please use a non-numeric value: ' . $value . ' | ' . $valueOrig, \E_USER_WARNING);
 
             return $fallback;
         }

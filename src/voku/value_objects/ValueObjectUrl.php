@@ -13,7 +13,6 @@ use voku\helper\UTF8;
  */
 final class ValueObjectUrl extends AbstractValueObject
 {
-
     /**
      * {@inheritdoc}
      */

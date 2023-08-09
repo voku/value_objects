@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
-use voku\helper\UTF8;
 use const JSON_THROW_ON_ERROR;
+use voku\helper\UTF8;
 
 /**
  * @extends AbstractValueObject<string>
@@ -14,7 +14,6 @@ use const JSON_THROW_ON_ERROR;
  */
 final class ValueObjectJson extends AbstractValueObject
 {
-
     /**
      * @param array<array-key, mixed>|object $value
      *
@@ -44,7 +43,6 @@ final class ValueObjectJson extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-
         if (
             $value !== null
             &&

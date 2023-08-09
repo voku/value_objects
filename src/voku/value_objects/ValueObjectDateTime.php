@@ -14,16 +14,15 @@ use Exception;
  */
 final class ValueObjectDateTime extends AbstractValueObject
 {
-
     /**
      * {@inheritdoc}
      */
     protected function validate($value): bool
     {
         try {
-            $dateTime = new DateTimeImmutable((string)$value);
+            $dateTime = new DateTimeImmutable((string) $value);
         } catch (Exception $e) {
-            trigger_error('wrong date time (required format: Y-m-d H:i:s): ' . $value, E_USER_WARNING);
+            trigger_error('wrong date time (required format: Y-m-d H:i:s): ' . $value . ' | ' . $e->__toString(), \E_USER_WARNING);
 
             return false;
         }
@@ -42,7 +41,6 @@ final class ValueObjectDateTime extends AbstractValueObject
 
     public function getDateTime(): DateTimeImmutable
     {
-        return new DateTimeImmutable((string)$this->value());
+        return new DateTimeImmutable((string) $this->value());
     }
-
 }

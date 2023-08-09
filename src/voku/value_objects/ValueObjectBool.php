@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
-use function is_bool;
-
 /**
  * @extends AbstractValueObject<bool>
  *
@@ -13,7 +11,6 @@ use function is_bool;
  */
 final class ValueObjectBool extends AbstractValueObject
 {
-
     public static function createFalse(): static
     {
         return static::create(false);
@@ -47,7 +44,7 @@ final class ValueObjectBool extends AbstractValueObject
 
     public function getValue(): bool
     {
-        return (bool)(string)$this;
+        return (bool) (string) $this;
     }
 
     public function isFalse(): bool
@@ -60,11 +57,10 @@ final class ValueObjectBool extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-        if (!is_bool($value)) {
+        if (!\is_bool($value)) {
             return false;
         }
 
         return parent::validate($value);
     }
-
 }

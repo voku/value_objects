@@ -16,9 +16,8 @@ use voku\value_objects\exceptions\InvalidValueObjectException;
  */
 abstract class AbstractValueObject implements Stringable, JsonSerializable
 {
-
     /**
-     * @var null|TValue
+     * @var TValue|null
      */
     private $value;
 
@@ -39,7 +38,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     }
 
     /**
-     * @param null|TValue $value
+     * @param TValue|null $value
      *
      * @throws InvalidValueObjectException
      */
@@ -53,11 +52,21 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
             throw new InvalidValueObjectException('The value "' . print_r($value ?? 'NULL', true) . '" is not correct for: ' . static::class);
         }
 
-        $this->value = $value;
+        $this->value = $this->parse($value);
     }
 
     /**
-     * @param null|TValue $value
+     * @param TValue|null $value
+     *
+     * @return TValue|null
+     */
+    protected function parse($value)
+    {
+        return $value;
+    }
+
+    /**
+     * @param TValue|null $value
      */
     protected function validate($value): bool
     {
@@ -98,7 +107,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     /**
      * Get the value that are used for the database.
      *
-     * @return null|TValue
+     * @return TValue|null
      */
     public function value()
     {
@@ -118,9 +127,9 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     }
 
     /**
-     * @return TValue
      * @throws InvalidValueObjectException
      *
+     * @return TValue
      */
     final public function valueOrThrowException()
     {
@@ -133,7 +142,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
 
     public function __toString(): string
     {
-        return (string)$this->value;
+        return (string) $this->value;
     }
 
     final public function encrypt(string $password): string
@@ -148,7 +157,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     /**
      * @template TCreateValue of TValue
      *
-     * @param null|TCreateValue $value
+     * @param TCreateValue|null $value
      *
      * @throws InvalidValueObjectException
      */
@@ -166,6 +175,6 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
      */
     final public function jsonSerialize(): mixed
     {
-        return (string)$this;
+        return (string) $this;
     }
 }

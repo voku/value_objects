@@ -13,7 +13,6 @@ use voku\value_objects\utils\MathUtils;
  */
 final class ValueObjectVat extends AbstractValueObject
 {
-
     /**
      * @param numeric-string|ValueObjectNumeric $net_price
      *
@@ -38,7 +37,7 @@ final class ValueObjectVat extends AbstractValueObject
         if ($this->value() === null) {
             $value = '0';
         } else {
-            $value = (string)$this->value();
+            $value = (string) $this->value();
         }
 
         return ValueObjectNumeric::create($value);

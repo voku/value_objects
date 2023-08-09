@@ -13,19 +13,17 @@ use Stringy\Stringy;
  */
 final class ValueObjectEmail extends AbstractValueObject
 {
-
     /**
      * {@inheritdoc}
      */
     protected function validate($value): bool
     {
         if (!Stringy::create($value)->isEmail()) {
-            trigger_error('not a valid email address: ' . $value, E_USER_WARNING);
+            trigger_error('not a valid email address: ' . $value, \E_USER_WARNING);
 
             return false;
         }
 
         return parent::validate($value);
     }
-
 }

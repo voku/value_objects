@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace voku\value_objects;
 
-use function is_int;
-
 /**
  * @extends AbstractValueObject<int>
  *
@@ -13,7 +11,6 @@ use function is_int;
  */
 final class ValueObjectInt extends AbstractValueObject
 {
-
     private const OPERATION_ADD = 'add';
 
     private const OPERATION_SUB = 'sub';
@@ -48,16 +45,16 @@ final class ValueObjectInt extends AbstractValueObject
     public static function create($value): static
     {
         /* @phpstan-ignore-next-line | allow "numeric" here, if we can convert it into "int" */
-        if (!is_int($value) && (string)(int)$value === (string)$value) {
-            $value = (int)$value;
+        if (!\is_int($value) && (string) (int) $value === (string) $value) {
+            $value = (int) $value;
         }
 
         return parent::create($value);
     }
 
     /**
-     * @param null|int|self                       $num
-     * @param null|int|self                       $mod
+     * @param int|self|null                       $num
+     * @param int|self|null                       $mod
      *
      * @phpstan-param ValueObjectInt::OPERATION_* $operation
      */
@@ -101,7 +98,7 @@ final class ValueObjectInt extends AbstractValueObject
 
                 break;
             case self::OPERATION_COMPARE:
-                $result = strnatcmp((string)$left, (string)$right);
+                $result = strnatcmp((string) $left, (string) $right);
 
                 break;
             default:
@@ -109,12 +106,12 @@ final class ValueObjectInt extends AbstractValueObject
                 throw new Exception('Invalid operation: ' . $operation);
         }
 
-        return (int)$result;
+        return (int) $result;
     }
 
     public function getValue(): int
     {
-        return (int)(string)$this;
+        return (int) (string) $this;
     }
 
     /**
@@ -176,17 +173,17 @@ final class ValueObjectInt extends AbstractValueObject
      */
     public function isEquals($num): bool
     {
-        return $this->compare($num) == 0;
+        return $this->compare($num) === 0;
     }
 
     /**
-     * @param null|int|self $num
+     * @param int|self|null $num
      */
     public function compare($num): int
     {
         $result = $this->performOperation(self::OPERATION_COMPARE, $num);
 
-        return (int)$result;
+        return (int) $result;
     }
 
     /**
@@ -194,7 +191,7 @@ final class ValueObjectInt extends AbstractValueObject
      */
     public function isGreaterThan($num): bool
     {
-        return $this->compare($num) == 1;
+        return $this->compare($num) === 1;
     }
 
     /**
@@ -202,7 +199,7 @@ final class ValueObjectInt extends AbstractValueObject
      */
     public function isLessThan($num): bool
     {
-        return $this->compare($num) == -1;
+        return $this->compare($num) === -1;
     }
 
     /**
@@ -223,7 +220,7 @@ final class ValueObjectInt extends AbstractValueObject
 
     public function toFloat(): float
     {
-        return (float)$this->getValue();
+        return (float) $this->getValue();
     }
 
     /**
@@ -231,11 +228,10 @@ final class ValueObjectInt extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-        if (!is_int($value)) {
+        if (!\is_int($value)) {
             return false;
         }
 
         return parent::validate($value);
     }
-
 }

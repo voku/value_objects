@@ -13,7 +13,6 @@ use Stringy\Stringy;
  */
 class ValueObjectString extends AbstractValueObject
 {
-
     public function isEmpty(): bool
     {
         return $this->o()->isEmpty();
@@ -37,7 +36,7 @@ class ValueObjectString extends AbstractValueObject
      */
     public function isEquals($other): bool
     {
-        if (is_string($other)) {
+        if (\is_string($other)) {
             /* @noinspection CallableParameterUseCaseInTypeContextInspection */
             $other = self::create($other);
         }
@@ -151,7 +150,7 @@ class ValueObjectString extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             return false;
         }
 

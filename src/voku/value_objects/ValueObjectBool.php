@@ -11,17 +11,12 @@ namespace voku\value_objects;
  */
 final class ValueObjectBool extends AbstractValueObject
 {
-    public static function createFalse(): static
-    {
-        return static::create(false);
-    }
-
     /**
      * {@inheritdoc}
      *
      * @phpstan-param 0|'0'|''|1|'1'|'f'|'t'|'false'|'true'|false|true $value
      */
-    public static function create($value): static
+    public static function create($value): self
     {
         if ($value === 0 || $value === '0' || $value === '' || $value === 'f' || $value === 'false') {
             $value = false;
@@ -32,19 +27,30 @@ final class ValueObjectBool extends AbstractValueObject
         return parent::create($value);
     }
 
-    public static function createTrue(): static
+    /**
+     * @return static
+     */
+    public static function createTrue(): self
     {
         return static::create(true);
     }
 
-    public function isTrue(): bool
+    /**
+     * @return static
+     */
+    public static function createFalse(): self
     {
-        return $this->getValue() === true;
+        return static::create(false);
     }
 
     public function getValue(): bool
     {
         return (bool) (string) $this;
+    }
+
+    public function isTrue(): bool
+    {
+        return $this->getValue() === true;
     }
 
     public function isFalse(): bool

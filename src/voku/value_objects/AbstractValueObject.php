@@ -26,9 +26,11 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     }
 
     /**
+     * @return static
+     *
      * @throws InvalidValueObjectException
      */
-    final public static function createEmpty(): static
+    final public static function createEmpty(): self
     {
         $static = new static();
 
@@ -74,17 +76,21 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
     }
 
     /**
+     * @return static
+     *
      * @throws InvalidValueObjectException
      */
-    final public static function decryptFromString(string $password, string $data): static
+    final public static function decryptFromString(string $password, string $data): self
     {
         return self::decrypt($password, $data);
     }
 
     /**
+     * @return static
+     *
      * @throws InvalidValueObjectException
      */
-    private static function decrypt(string $password, string $encodedData): static
+    private static function decrypt(string $password, string $encodedData): self
     {
         $encodedData = str_replace(static::class . '_', '', $encodedData);
 
@@ -159,9 +165,11 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable
      *
      * @param TCreateValue|null $value
      *
+     * @return static
+     *
      * @throws InvalidValueObjectException
      */
-    public static function create($value): static
+    public static function create($value): self
     {
         $static = new static();
 

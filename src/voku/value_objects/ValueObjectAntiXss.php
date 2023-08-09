@@ -19,7 +19,7 @@ final class ValueObjectAntiXss extends ValueObjectString
      *
      * {@inheritdoc}
      */
-    public static function create($value): static
+    public static function create($value): self
     {
         $value = self::anti_xss($value);
 

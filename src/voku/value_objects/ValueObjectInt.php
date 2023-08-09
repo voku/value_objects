@@ -31,8 +31,10 @@ final class ValueObjectInt extends AbstractValueObject
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function add($num): static
+    public function add($num): self
     {
         return self::create($this->performOperation(self::OPERATION_ADD, $num));
     }
@@ -42,7 +44,7 @@ final class ValueObjectInt extends AbstractValueObject
      *
      * @param int $value
      */
-    public static function create($value): static
+    public static function create($value): self
     {
         /* @phpstan-ignore-next-line | allow "numeric" here, if we can convert it into "int" */
         if (!\is_int($value) && (string) (int) $value === (string) $value) {
@@ -116,32 +118,40 @@ final class ValueObjectInt extends AbstractValueObject
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function sub($num): static
+    public function sub($num): self
     {
         return self::create($this->performOperation(self::OPERATION_SUB, $num));
     }
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function mul($num): static
+    public function mul($num): self
     {
         return self::create($this->performOperation(self::OPERATION_MUL, $num));
     }
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function div($num): static
+    public function div($num): self
     {
         return self::create($this->performOperation(self::OPERATION_DIV, $num));
     }
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function pow($num): static
+    public function pow($num): self
     {
         return self::create($this->performOperation(self::OPERATION_POW, $num));
     }
@@ -149,21 +159,28 @@ final class ValueObjectInt extends AbstractValueObject
     /**
      * @param int|self $num
      * @param int|self $mod
+     *
+     * @return static
      */
-    public function powmod($num, $mod): static
+    public function powmod($num, $mod): self
     {
         return self::create($this->performOperation(self::OPERATION_POWMOD, $num, $mod));
     }
 
-    public function sqrt(): static
+    /**
+     * @return static
+     */
+    public function sqrt(): self
     {
         return self::create($this->performOperation(self::OPERATION_SQRT, null));
     }
 
     /**
      * @param int|self $num
+     *
+     * @return static
      */
-    public function mod($num): static
+    public function mod($num): self
     {
         return self::create($this->performOperation(self::OPERATION_MOD, $num));
     }

@@ -26,10 +26,8 @@ final class ValueObjectJson extends AbstractValueObject
 
     /**
      * {@inheritdoc}
-     *
-     * @return static
      */
-    public static function create($value): static
+    public static function create($value): self
     {
         if ($value === 'null') { // null is a valid json value, but we try to validate php interpretation of it
             $value = null;

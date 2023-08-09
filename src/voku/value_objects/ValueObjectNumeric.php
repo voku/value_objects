@@ -67,7 +67,7 @@ final class ValueObjectNumeric extends AbstractValueObject
         $value,
         string $activeLocale = 'en-US',
         int $scale = 10
-    ): static {
+    ): self {
         $valueParsed = MathUtils::i18n_number_parse($value, $activeLocale, null);
         if ($valueParsed === null) {
             throw new InvalidValueObjectException('could not parse value: ' . $value . ' | locale: ' . $activeLocale);
@@ -82,7 +82,7 @@ final class ValueObjectNumeric extends AbstractValueObject
      *
      * {@inheritdoc}
      */
-    public static function create($value, int $scale = 10): static
+    public static function create($value, int $scale = 10): self
     {
         /* @phpstan-ignore-next-line | we do not trust the code here, so we check the type again */
         if ($scale < 0) {
@@ -129,8 +129,10 @@ final class ValueObjectNumeric extends AbstractValueObject
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function add($num, ?int $scale = null): static
+    public function add($num, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_ADD, $num, null, $scale), $this->scale);
     }
@@ -236,32 +238,40 @@ final class ValueObjectNumeric extends AbstractValueObject
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function sub($num, ?int $scale = null): static
+    public function sub($num, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_SUB, $num, null, $scale), $this->scale);
     }
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function mul($num, ?int $scale = null): static
+    public function mul($num, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_MUL, $num, null, $scale), $this->scale);
     }
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function div($num, ?int $scale = null): static
+    public function div($num, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_DIV, $num, null, $scale), $this->scale);
     }
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function pow($num, ?int $scale = null): static
+    public function pow($num, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_POW, $num, null, $scale), $this->scale);
     }
@@ -269,21 +279,28 @@ final class ValueObjectNumeric extends AbstractValueObject
     /**
      * @param numeric|self $num
      * @param numeric|self $mod
+     *
+     * @return static
      */
-    public function powmod($num, $mod, ?int $scale = null): static
+    public function powmod($num, $mod, ?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_POWMOD, $num, $mod, $scale), $this->scale);
     }
 
-    public function sqrt(?int $scale = null): static
+    /**
+     * @return static
+     */
+    public function sqrt(?int $scale = null): self
     {
         return self::create($this->performOperation(self::OPERATION_SQRT, null, null, $scale), $this->scale);
     }
 
     /**
      * @param numeric|self $num
+     *
+     * @return static
      */
-    public function mod($num): static
+    public function mod($num): self
     {
         return self::create($this->performOperation(self::OPERATION_MOD, $num, null), $this->scale);
     }
@@ -291,8 +308,10 @@ final class ValueObjectNumeric extends AbstractValueObject
     /**
      * @phpstan-param 1|2|3|4 $mode
      *                              <p>PHP_ROUND_*</p>
+     *
+     * @return static
      */
-    public function round(int $precision = 3, int $mode = PHP_ROUND_HALF_UP): static
+    public function round(int $precision = 3, int $mode = PHP_ROUND_HALF_UP): self
     {
         // @codingStandardsIgnoreStart
         return self::create((string) round((float) $this->value(), $precision, $mode), $this->scale);

@@ -66,10 +66,8 @@ final class MathUtils
                 $decimals = 0;
             }
 
-            $string = number_format((float) $string, $decimals, '.', '');
+            $string = number_format( $numeric, $decimals, '.', '');
         }
-
-        \assert(is_numeric($string));
 
         return $string;
     }

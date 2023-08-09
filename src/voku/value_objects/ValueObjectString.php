@@ -44,12 +44,18 @@ class ValueObjectString extends AbstractValueObject
         return $this->o()->isEquals($other->o());
     }
 
-    public function extractIntegers(): static
+    /**
+     * @return static
+     */
+    public function extractIntegers(): self
     {
         return self::create($this->o()->extractIntegers()->toString());
     }
 
-    public function extractSpecialCharacters(): static
+    /**
+     * @return static
+     */
+    public function extractSpecialCharacters(): self
     {
         return self::create($this->o()->extractSpecialCharacters()->toString());
     }
@@ -59,7 +65,10 @@ class ValueObjectString extends AbstractValueObject
         return $this->o()->length();
     }
 
-    public function replace(string $search, string $replacement): static
+    /**
+     * @return static
+     */
+    public function replace(string $search, string $replacement): self
     {
         return self::create($this->o()->replace($search, $replacement)->toString());
     }
@@ -85,62 +94,98 @@ class ValueObjectString extends AbstractValueObject
         return $this->o()->containsAll($needles);
     }
 
-    public function toUpperCase(): static
+    /**
+     * @return static
+     */
+    public function toUpperCase(): self
     {
         return self::create($this->o()->toUpperCase()->toString());
     }
 
-    public function toLowerCase(): static
+    /**
+     * @return static
+     */
+    public function toLowerCase(): self
     {
         return self::create($this->o()->toLowerCase()->toString());
     }
 
-    public function base64Decode(): static
+    /**
+     * @return static
+     */
+    public function base64Decode(): self
     {
         return self::create($this->o()->base64Decode()->toString());
     }
 
-    public function base64Encode(): static
+    /**
+     * @return static
+     */
+    public function base64Encode(): self
     {
         return self::create($this->o()->base64Encode()->toString());
     }
 
-    public function escape(): static
+    /**
+     * @return static
+     */
+    public function escape(): self
     {
         return self::create($this->o()->escape()->toString());
     }
 
-    public function append(string ...$suffix): static
+    /**
+     * @return static
+     */
+    public function append(string ...$suffix): self
     {
         return self::create($this->o()->append(...$suffix)->toString());
     }
 
-    public function prepend(string ...$prefix): static
+    /**
+     * @return static
+     */
+    public function prepend(string ...$prefix): self
     {
         return self::create($this->o()->prepend(...$prefix)->toString());
     }
 
-    public function truncate(int $length = 0, string $substring = ''): static
+    /**
+     * @return static
+     */
+    public function truncate(int $length = 0, string $substring = ''): self
     {
         return self::create($this->o()->truncate($length, $substring)->toString());
     }
 
-    public function removeXss(): static
+    /**
+     * @return static
+     */
+    public function removeXss(): self
     {
         return self::create($this->o()->removeXss()->toString());
     }
 
-    public function encryptWithPassword(string $password): static
+    /**
+     * @return static
+     */
+    public function encryptWithPassword(string $password): self
     {
         return self::create($this->o()->encrypt($password)->toString());
     }
 
-    public function decryptWithPassword(string $password): static
+    /**
+     * @return static
+     */
+    public function decryptWithPassword(string $password): self
     {
         return self::create($this->o()->decrypt($password)->toString());
     }
 
-    public function appendRandomString(int $length, string $possibleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): static
+    /**
+     * @return static
+     */
+    public function appendRandomString(int $length, string $possibleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): self
     {
         return self::create($this->o()->appendRandomString($length, $possibleChars)->toString());
     }

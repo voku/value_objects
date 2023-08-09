@@ -51,12 +51,18 @@ final class ValueObjectCurrency extends AbstractValueObject
         return $this->o()->containsAll($needles);
     }
 
-    public function toUpperCase(): static
+    /**
+     * @return static
+     */
+    public function toUpperCase(): self
     {
         return self::create($this->o()->toUpperCase()->toString());
     }
 
-    public function toLowerCase(): static
+    /**
+     * @return static
+     */
+    public function toLowerCase(): self
     {
         return self::create($this->o()->toLowerCase()->toString());
     }

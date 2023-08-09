@@ -18,6 +18,8 @@
     "voku/stringy": "~6.5.3"
   },
   "require-dev": {
+    "symfony/polyfill-php80": "1.*",
+    "symfony/polyfill-ctype": "1.*",
     "phpstan/phpstan": "1.10.*",
     "phpunit/phpunit": "9.6.*",
     "php-cs-fixer/shim": "v3.22.*"

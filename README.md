@@ -43,22 +43,22 @@ composer install
 
 ## AbstractHttpProvider methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#createnulltcreatevalue-value">create</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#createtcreatevaluenull-value">create</a>
 </td><td><a href="#createempty">createEmpty</a>
 </td><td><a href="#decryptfromstringstring-password-string-data">decryptFromString</a>
 </td><td><a href="#encryptstring-password">encrypt</a>
 </td></tr><tr><td><a href="#jsonserialize-string">jsonSerialize</a>
-</td><td><a href="#value-nulltvalue">value</a>
+</td><td><a href="#value-tvaluenull">value</a>
 </td><td><a href="#valueorfallbacktvaluefallback-fallback-tvaluetvaluefallback">valueOrFallback</a>
 </td><td><a href="#valueorthrowexception-tvalue">valueOrThrowException</a>
 </td></tr></table>
 
-## create(null|\TCreateValue $value): 
+## create(\TCreateValue|null $value): 
 <a href="#voku-php-readme-class-methods">↑</a>
 
 
 **Parameters:**
-- `null|\TCreateValue $value`
+- `\TCreateValue|null $value`
 
 **Return:**
 - `static`
@@ -114,7 +114,7 @@ __nothing__
 
 --------
 
-## value(): null|\TValue
+## value(): TValue|null
 <a href="#voku-php-readme-class-methods">↑</a>
 Get the value that are used for the database.
 
@@ -122,7 +122,7 @@ Get the value that are used for the database.
 __nothing__
 
 **Return:**
-- `null|\TValue`
+- `\TValue|null`
 
 --------
 

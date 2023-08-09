@@ -15,6 +15,9 @@ self-validated and immutable code.
 composer require voku/value_objects
 ```
 
+INFO: if you still use PHP 7.4 (you should update your version) but you still can use the value objects if you also require `
+symfony/polyfill-php80`
+
 ### Usage
 
 ```php
@@ -43,9 +46,9 @@ composer install
 
 ## AbstractHttpProvider methods
 
-<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#createtcreatevaluenull-value">create</a>
-</td><td><a href="#createempty">createEmpty</a>
-</td><td><a href="#decryptfromstringstring-password-string-data">decryptFromString</a>
+<p id="voku-php-readme-class-methods"></p><table><tr><td><a href="#createtcreatevaluenull-value-static">create</a>
+</td><td><a href="#createempty-static">createEmpty</a>
+</td><td><a href="#decryptfromstringstring-password-string-data-static">decryptFromString</a>
 </td><td><a href="#encryptstring-password">encrypt</a>
 </td></tr><tr><td><a href="#jsonserialize-string">jsonSerialize</a>
 </td><td><a href="#value-tvaluenull">value</a>
@@ -53,7 +56,7 @@ composer install
 </td><td><a href="#valueorthrowexception-tvalue">valueOrThrowException</a>
 </td></tr></table>
 
-## create(\TCreateValue|null $value): 
+## create(\TCreateValue|null $value): static
 <a href="#voku-php-readme-class-methods">↑</a>
 
 
@@ -65,7 +68,7 @@ composer install
 
 --------
 
-## createEmpty(): 
+## createEmpty(): static
 <a href="#voku-php-readme-class-methods">↑</a>
 
 
@@ -77,7 +80,7 @@ __nothing__
 
 --------
 
-## decryptFromString(string $password, string $data): 
+## decryptFromString(string $password, string $data): static
 <a href="#voku-php-readme-class-methods">↑</a>
 
 

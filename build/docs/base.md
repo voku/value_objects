@@ -14,6 +14,9 @@ self-validated and immutable code.
 composer require voku/value_objects
 ```
 
+INFO: if you still use PHP 7.4 (you should update your version) but you still can use the value objects if you also require `
+symfony/polyfill-php80`
+
 ### Usage
 
 ```php

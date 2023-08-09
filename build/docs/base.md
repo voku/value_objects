@@ -5,7 +5,8 @@
 
 # Value Objects
 
-...
+A collection of value objects that can help you to write more readable, 
+self-validated and immutable code.
 
 ### Install with Composer
 

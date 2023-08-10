@@ -25,7 +25,7 @@ use voku\value_objects\ValueObjectVat;
 
 require_once __DIR__ . '/vendor/autoload.php'; // example path
 
-  $vat = ValueObjectVat::create('16.0');
+$vat = ValueObjectVat::create('16.0');
 
 $vat->getGross(10.0)); // '11.6'
 ```

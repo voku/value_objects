@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectDateTime;
+use voku\ValueObjects\ValueObjectDateTime;
 
 /**
  * @internal
@@ -21,8 +21,8 @@ final class ValueObjectDateTimeTest extends TestCase
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "20-20-2021 01:01:01" is not correct for: voku\value_objects\ValueObjectDateTime');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "20-20-2021 01:01:01" is not correct for: voku\ValueObjects\ValueObjectDateTime');
         @ValueObjectDateTime::create('20-20-2021 01:01:01');
     }
 }

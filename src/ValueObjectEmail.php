@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
-use Stringy\Stringy;
 use voku\helper\EmailCheck;
 
 /**
@@ -25,7 +24,7 @@ final class ValueObjectEmail extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 
     /**

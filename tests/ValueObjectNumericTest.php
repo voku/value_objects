@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\utils\MathUtils;
-use voku\value_objects\ValueObjectNumeric;
+use voku\ValueObjects\utils\MathUtils;
+use voku\ValueObjects\ValueObjectNumeric;
 
 /**
  * @internal
@@ -14,18 +14,18 @@ final class ValueObjectNumericTest extends TestCase
     public function testSimple(): void
     {
         $numeric = ValueObjectNumeric::create(1);
-        static::assertSame('4.1400000000', $numeric->add(3.14)->getValue());
+        static::assertSame('4.1400000000', $numeric->add(3.14)->value());
 
         // --
 
         $numeric = ValueObjectNumeric::create(MathUtils::i18n_number_parse('1.3'));
-        static::assertSame('1.0000000000', $numeric->sub(0.3)->getValue());
+        static::assertSame('1.0000000000', $numeric->sub(0.3)->value());
     }
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "test" is not correct for: voku\value_objects\ValueObjectNumeric');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "test" is not correct for: voku\ValueObjects\ValueObjectNumeric');
 
         ValueObjectNumeric::create('test');
     }
@@ -38,7 +38,7 @@ final class ValueObjectNumericTest extends TestCase
      */
     public function itSupportsScientificNotation($scientificNotationExamples0, $scientificNotationExamples1): void
     {
-        static::assertSame($scientificNotationExamples1, ValueObjectNumeric::create($scientificNotationExamples0)->getValue());
+        static::assertSame($scientificNotationExamples1, ValueObjectNumeric::create($scientificNotationExamples0)->value());
     }
 
     public function scientificNotationExamples(): array

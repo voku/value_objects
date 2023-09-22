@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
+use Throwable;
+use voku\ValueObjects\exceptions\InvalidValueObjectException;
+use voku\ValueObjects\exceptions\ValueObjectNumericException;
+use voku\ValueObjects\utils\MathUtils;
 use function ob_get_flush;
 use function ob_start;
 use const PHP_ROUND_HALF_UP;
-use Throwable;
-use voku\value_objects\exceptions\InvalidValueObjectException;
-use voku\value_objects\exceptions\ValueObjectNumericException;
-use voku\value_objects\utils\MathUtils;
 
 /**
  * @extends AbstractValueObject<numeric-string>
@@ -151,9 +151,9 @@ final class ValueObjectNumeric extends AbstractValueObject
                $mod = null,
         ?int $scale = null
     ) {
-        $left = $this->getValue();
-        $right = $num instanceof self ? $num->getValue() : self::filterNumeric($num);
-        $mod = $mod instanceof self ? $mod->getValue() : self::filterNumeric($mod);
+        $left = $this->value();
+        $right = $num instanceof self ? $num->value() : self::filterNumeric($num);
+        $mod = $mod instanceof self ? $mod->value() : self::filterNumeric($mod);
         $func = self::OPERATIONS_MAP[$operation];
 
         // ------------------------------------------------------
@@ -230,7 +230,7 @@ final class ValueObjectNumeric extends AbstractValueObject
     /**
      * @return numeric-string
      */
-    public function getValue(): string
+    public function value(): string
     {
         /* @phpstan-ignore-next-line | we know that this is numeric-string by definition */
         return (string) $this;
@@ -374,15 +374,15 @@ final class ValueObjectNumeric extends AbstractValueObject
 
     public function toFloat(): float
     {
-        return (float) $this->getValue();
+        return (float) $this->value();
     }
 
     /**
      * @return false|string
      */
     public function i18n_number_format(
-        string $activeLocale = 'en-US',
-        int $precision = 2,
+        string          $activeLocale = 'en-US',
+        int             $precision = 2,
         bool $showMore = false,
         bool $sendWarningOnError = true
     ) {
@@ -404,6 +404,6 @@ final class ValueObjectNumeric extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

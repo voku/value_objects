@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
 use Stringy\Stringy;
 
@@ -199,7 +199,7 @@ class ValueObjectString extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 
     //

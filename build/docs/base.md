@@ -20,11 +20,11 @@ symfony/polyfill-php80`
 ### Usage
 
 ```php
-use voku\value_objects\ValueObjectVat;
+use voku\ValueObjects\ValueObjectVatPercentage;
 
 require_once __DIR__ . '/vendor/autoload.php'; // example path
 
-$vat = ValueObjectVat::create('16.0');
+$vat = ValueObjectVatPercentage::create('16.0');
 
 $vat->getGross(10.0)); // '11.6'
 ```

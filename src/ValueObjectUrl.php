@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
 use voku\helper\UTF8;
 
@@ -18,14 +18,10 @@ final class ValueObjectUrl extends AbstractValueObject
      */
     protected function validate($value): bool
     {
-        if ($value === '' || $value === null) {
-            return true;
-        }
-
         if (!UTF8::is_url($value)) {
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

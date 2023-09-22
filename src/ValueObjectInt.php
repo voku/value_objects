@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
 /**
- * @extends AbstractValueObject<int>
+ * @template TValue as int
+ * @extends AbstractValueObject<TValue>
  *
  * @immutable
  */
-final class ValueObjectInt extends AbstractValueObject
+class ValueObjectInt extends AbstractValueObject
 {
     private const OPERATION_ADD = 'add';
 
@@ -30,41 +31,37 @@ final class ValueObjectInt extends AbstractValueObject
     private const OPERATION_COMPARE = 'compare';
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function add($num): self
     {
         return self::create($this->performOperation(self::OPERATION_ADD, $num));
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param int $value
-     */
-    public static function create($value): self
+    protected function parseBeforeValidation($value)
     {
-        /* @phpstan-ignore-next-line | allow "numeric" here, if we can convert it into "int" */
-        if (!\is_int($value) && (string) (int) $value === (string) $value) {
-            $value = (int) $value;
+        if (!\is_int($value) && (string)(int)$value === (string)$value) {
+            $value = (int)$value;
         }
 
-        return parent::create($value);
+        return $value;
     }
 
     /**
-     * @param int|self|null                       $num
-     * @param int|self|null                       $mod
+     * @param int|static<TValue>|null                       $num
+     * @param int|static<TValue>|null                       $mod
      *
      * @phpstan-param ValueObjectInt::OPERATION_* $operation
+     *
+     * @phpstan-return TValue
      */
     private function performOperation(string $operation, $num = null, $mod = null): int
     {
-        $left = $this->getValue();
-        $right = $num instanceof self ? $num->getValue() : $num;
-        $mod = $mod instanceof self ? $mod->getValue() : $mod;
+        $left = $this->value();
+        $right = $num instanceof self ? $num->value() : $num;
+        $mod = $mod instanceof self ? $mod->value() : $mod;
 
         switch ($operation) {
             case self::OPERATION_ADD:
@@ -104,22 +101,22 @@ final class ValueObjectInt extends AbstractValueObject
 
                 break;
             default:
-                /* @phpstan-ignore-next-line | we do not want to catch this exception, so it's ok to use Exception here */
-                throw new Exception('Invalid operation: ' . $operation);
+                throw new \Exception('Invalid operation: ' . $operation);
         }
 
+        /* @phpstan-ignore-next-line | is ok here */
         return (int) $result;
     }
 
-    public function getValue(): int
+    public function value(): int
     {
-        return (int) (string) $this;
+        return parent::value();
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function sub($num): self
     {
@@ -127,9 +124,9 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function mul($num): self
     {
@@ -137,9 +134,9 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function div($num): self
     {
@@ -147,9 +144,9 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function pow($num): self
     {
@@ -157,10 +154,10 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
-     * @param int|self $mod
+     * @param int|static<TValue> $num
+     * @param int|static<TValue> $mod
      *
-     * @return static
+     * @return static<TValue>
      */
     public function powmod($num, $mod): self
     {
@@ -168,7 +165,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @return static
+     * @return static<TValue>
      */
     public function sqrt(): self
     {
@@ -176,9 +173,9 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      *
-     * @return static
+     * @return static<TValue>
      */
     public function mod($num): self
     {
@@ -186,7 +183,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      */
     public function isEquals($num): bool
     {
@@ -194,7 +191,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self|null $num
+     * @param int|static<TValue>|null $num
      */
     public function compare($num): int
     {
@@ -204,7 +201,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      */
     public function isGreaterThan($num): bool
     {
@@ -212,7 +209,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      */
     public function isLessThan($num): bool
     {
@@ -220,7 +217,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      */
     public function isGreaterOrEquals($num): bool
     {
@@ -228,7 +225,7 @@ final class ValueObjectInt extends AbstractValueObject
     }
 
     /**
-     * @param int|self $num
+     * @param int|static<TValue> $num
      */
     public function isLessOrEquals($num): bool
     {
@@ -237,7 +234,7 @@ final class ValueObjectInt extends AbstractValueObject
 
     public function toFloat(): float
     {
-        return (float) $this->getValue();
+        return (float) $this->value();
     }
 
     /**
@@ -249,6 +246,6 @@ final class ValueObjectInt extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

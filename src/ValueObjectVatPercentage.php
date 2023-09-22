@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
-use voku\value_objects\utils\MathUtils;
+use voku\ValueObjects\utils\MathUtils;
 
 /**
  * @extends AbstractValueObject<numeric>
  *
  * @immutable
  */
-final class ValueObjectVat extends AbstractValueObject
+final class ValueObjectVatPercentage extends AbstractValueObject
 {
     /**
      * @param numeric-string|ValueObjectNumeric $net_price
@@ -24,23 +24,17 @@ final class ValueObjectVat extends AbstractValueObject
             $net_price = ValueObjectNumeric::create($net_price);
         }
 
-        $vat = $this->getValueObjectNumeric();
+        $vat = $this->valueAsNumericValueObject();
 
         return MathUtils::round(
-            $net_price->mul($vat->div(100))->add($net_price)->getValue(),
+            $net_price->mul($vat->div(100))->add($net_price)->value(),
             $precision
         );
     }
 
-    public function getValueObjectNumeric(): ValueObjectNumeric
+    public function valueAsNumericValueObject(): ValueObjectNumeric
     {
-        if ($this->value() === null) {
-            $value = '0';
-        } else {
-            $value = (string) $this->value();
-        }
-
-        return ValueObjectNumeric::create($value);
+        return ValueObjectNumeric::create((string) $this->value());
     }
 
     /**
@@ -56,10 +50,6 @@ final class ValueObjectVat extends AbstractValueObject
             return false;
         }
 
-        if ($value === null) {
-            return false;
-        }
-
         $decimal = MathUtils::numberOfDecimals($value);
         if ($decimal >= 3) {
             return false;
@@ -69,6 +59,6 @@ final class ValueObjectVat extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

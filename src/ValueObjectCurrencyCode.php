@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
 use Stringy\Stringy;
 use function strtoupper;
@@ -82,7 +82,7 @@ final class ValueObjectCurrencyCode extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 
     public function getCurrencyName(): ?string {

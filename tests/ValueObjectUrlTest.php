@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectUrl;
+use voku\ValueObjects\ValueObjectUrl;
 
 /**
  * @internal
@@ -10,17 +10,17 @@ final class ValueObjectUrlTest extends TestCase
 {
     public function testSimple(): void
     {
-        $str = ValueObjectUrl::create('https://ipayment.de/foo/test');
+        $str = ValueObjectUrl::create('https://moelleken.org/foo/test');
 
-        static::assertSame('https://ipayment.de/foo/test', $str . '');
-        static::assertSame('https://ipayment.de/foo/test', $str->__toString());
-        static::assertSame($str->value(), $str->valueOrThrowException());
+        static::assertSame('https://moelleken.org/foo/test', $str . '');
+        static::assertSame('https://moelleken.org/foo/test', $str->__toString());
+        static::assertSame('https://moelleken.org/foo/test', $str->value());
     }
 
     public function testError(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "htps://foo.de" is not correct for: voku\value_objects\ValueObjectUrl');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "htps://foo.de" is not correct for: voku\ValueObjects\ValueObjectUrl');
         ValueObjectUrl::create('htps://foo.de');
     }
 }

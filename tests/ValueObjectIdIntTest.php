@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectIdInt;
+use voku\ValueObjects\ValueObjectIdInt;
 
 /**
  * @internal
@@ -21,8 +21,9 @@ final class ValueObjectIdIntTest extends TestCase
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "foo" is not correct for: voku\value_objects\ValueObjectIdInt');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "foo" is not correct for: voku\ValueObjects\ValueObjectIdInt');
+        /* @phpstan-ignore-next-line | failing test */
         @ValueObjectIdInt::create('foo');
     }
 }

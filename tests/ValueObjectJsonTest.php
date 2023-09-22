@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectJson;
+use voku\ValueObjects\ValueObjectJson;
 
 /**
  * @internal
@@ -30,8 +30,8 @@ final class ValueObjectJsonTest extends TestCase
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "{"parentList": [1,2000012205,..." is not correct for: voku\value_objects\ValueObjectJson');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "{"parentList": [1,2000012205,..." is not correct for: voku\ValueObjects\ValueObjectJson');
         ValueObjectJson::create('{"parentList": [1,2000012205,...');
     }
 }

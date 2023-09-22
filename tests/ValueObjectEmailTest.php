@@ -2,7 +2,7 @@
 
 use Defuse\Crypto\Crypto;
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectEmail;
+use voku\ValueObjects\ValueObjectEmail;
 
 /**
  * @internal
@@ -13,10 +13,9 @@ final class ValueObjectEmailTest extends TestCase
     {
         $email = ValueObjectEmail::create('lars@moelleken.org');
 
-        static::assertSame('lars@moelleken.org', $email . '');
-        static::assertSame('lars@moelleken.org', $email->__toString());
-        static::assertSame('lars@moelleken.org', $email->value());
-        static::assertSame($email->value(), $email->valueOrThrowException());
+        ValueObjectEmailTest::assertSame('lars@moelleken.org', $email . '');
+        ValueObjectEmailTest::assertSame('lars@moelleken.org', $email->__toString());
+        ValueObjectEmailTest::assertSame('lars@moelleken.org', $email->value());
     }
 
     public function testSimpleFail(): void
@@ -27,37 +26,38 @@ final class ValueObjectEmailTest extends TestCase
             $error = $exception->getMessage();
         }
 
-        static::assertSame('The value "lars@moelleken" is not correct for: voku\value_objects\ValueObjectEmail', $error);
+        /* @phpstan-ignore-next-line | failing test */
+        ValueObjectEmailTest::assertSame('The value "lars@moelleken" is not correct for: voku\ValueObjects\ValueObjectEmail', $error);
     }
 
     public function testDecrypt(): void
     {
         $email = ValueObjectEmail::create('lars@moelleken.org');
         $encrypted = $email->encrypt('mySimplePassword1234');
-        $emailDecrypted = ValueObjectEmail::decryptFromString('mySimplePassword1234', $encrypted);
+        $emailDecrypted = ValueObjectEmail::createByDecrypt('mySimplePassword1234', $encrypted);
 
-        static::assertSame('lars@moelleken.org', $emailDecrypted->value());
+        ValueObjectEmailTest::assertSame('lars@moelleken.org', $emailDecrypted->value());
     }
 
     public function testDecryptError(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
 
-        ValueObjectEmail::decryptFromString('mySimplePassword1234', 'foobar');
+        ValueObjectEmail::createByDecrypt('mySimplePassword1234', 'foobar');
     }
 
     public function testDecryptError2(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
 
         $encrypted = Crypto::encryptWithPassword('lars@moelleken.org', 'test1234');
-        ValueObjectEmail::decryptFromString('mySimplePassword1234', $encrypted);
+        ValueObjectEmail::createByDecrypt('mySimplePassword1234', $encrypted);
     }
 
     public function testNullError(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        /* @phpstan-ignore-next-line | failing test */
         @ValueObjectEmail::create(null);
     }
 }

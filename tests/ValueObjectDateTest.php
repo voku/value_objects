@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectDate;
+use voku\ValueObjects\ValueObjectDate;
 
 /**
  * @internal
@@ -21,8 +21,8 @@ final class ValueObjectDateTest extends TestCase
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "20-20-2021" is not correct for: voku\value_objects\ValueObjectDate');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "20-20-2021" is not correct for: voku\ValueObjects\ValueObjectDate');
         @ValueObjectDate::create('20-20-2021');
     }
 }

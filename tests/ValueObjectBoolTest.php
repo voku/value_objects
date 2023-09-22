@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use voku\value_objects\ValueObjectBool;
+use voku\ValueObjects\ValueObjectBool;
 
 /**
  * @internal
@@ -11,38 +11,39 @@ final class ValueObjectBoolTest extends TestCase
     public function testSimple(): void
     {
         $bool = ValueObjectBool::create(1);
-        static::assertTrue($bool->getValue());
+        ValueObjectBoolTest::assertTrue($bool->value());
 
         // --
 
         $bool = ValueObjectBool::createTrue();
-        static::assertTrue($bool->getValue());
+        ValueObjectBoolTest::assertTrue($bool->value());
 
         // --
 
         $bool = ValueObjectBool::create('0');
-        static::assertFalse($bool->getValue());
+        ValueObjectBoolTest::assertFalse($bool->value());
 
         // --
 
         $bool = ValueObjectBool::createFalse();
-        static::assertFalse($bool->getValue());
+        ValueObjectBoolTest::assertFalse($bool->value());
 
         // --
 
         $bool = ValueObjectBool::create(false);
-        static::assertTrue($bool->isFalse());
+        ValueObjectBoolTest::assertTrue($bool->isFalse());
 
         // --
 
         $bool = ValueObjectBool::create(true);
-        static::assertFalse($bool->isFalse());
+        ValueObjectBoolTest::assertFalse($bool->isFalse());
     }
 
     public function testSimpleFail(): void
     {
-        $this->expectException('voku\value_objects\exceptions\InvalidValueObjectException');
-        $this->expectExceptionMessage('The value "1.3" is not correct for: voku\value_objects\ValueObjectBool');
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('The value "1.3" is not correct for: voku\ValueObjects\ValueObjectBool');
+        /* @phpstan-ignore-next-line | failing test */
         ValueObjectBool::create(1.3);
     }
 }

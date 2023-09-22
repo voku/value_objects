@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
-use voku\value_objects\exceptions\InvalidValueObjectException;
+use voku\ValueObjects\exceptions\InvalidValueObjectException;
 
 /**
  * @extends AbstractValueObject<bool>
@@ -18,9 +18,15 @@ final class ValueObjectBool extends AbstractValueObject
      *
      * @phpstan-param 0|'0'|''|1|'1'|'f'|'t'|'false'|'true'|false|true $value
      *
-     * @throws InvalidValueObjectException
+     * @phpstan-return ValueObjectBool
      */
-    public static function create($value): self
+    public static function create($value): InterfaceValueObject
+    {
+        /* @phpstan-ignore-next-line | ok here because of "parseBeforeValidation" */
+        return parent::create($value);
+    }
+
+    protected function parseBeforeValidation($value)
     {
         if ($value === 0 || $value === '0' || $value === '' || $value === 'f' || $value === 'false') {
             $value = false;
@@ -28,7 +34,7 @@ final class ValueObjectBool extends AbstractValueObject
             $value = true;
         }
 
-        return parent::create($value);
+        return $value;
     }
 
     /**
@@ -47,19 +53,14 @@ final class ValueObjectBool extends AbstractValueObject
         return static::create(false);
     }
 
-    public function getValue(): bool
-    {
-        return (bool) (string) $this;
-    }
-
     public function isTrue(): bool
     {
-        return $this->getValue() === true;
+        return $this->value() === true;
     }
 
     public function isFalse(): bool
     {
-        return $this->getValue() === false;
+        return $this->value() === false;
     }
 
     /**
@@ -71,6 +72,6 @@ final class ValueObjectBool extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

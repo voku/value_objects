@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects\utils;
+namespace voku\ValueObjects\utils;
 
-use function fmod;
 use NumberFormatter;
-use function round;
 use voku\helper\AntiXSS;
 use voku\helper\UTF8;
-use voku\value_objects\AbstractValueObject;
-use voku\value_objects\ValueObjectInt;
-use voku\value_objects\ValueObjectNumeric;
+use voku\ValueObjects\AbstractValueObject;
+use voku\ValueObjects\InterfaceValueObject;
+use voku\ValueObjects\ValueObjectInt;
+use voku\ValueObjects\ValueObjectNumeric;
+use function fmod;
+use function round;
 
 final class MathUtils
 {
@@ -21,7 +22,7 @@ final class MathUtils
     public static function numberOfDecimals($numeric, bool $removeRightZero = false): int
     {
         if ($numeric instanceof ValueObjectNumeric || $numeric instanceof ValueObjectInt) {
-            $numeric = $numeric->getValue();
+            $numeric = $numeric->value();
         }
 
         if ((int) $numeric === $numeric) {
@@ -59,15 +60,27 @@ final class MathUtils
             return '0';
         }
 
-        if (UTF8::str_contains($string, 'E', false) && preg_match('~\.(\d+)E([+-])?(\d+)~i', $string, $matches)) {
+        if (
+            UTF8::str_contains($string, 'E', false)
+            &&
+            preg_match('~\.(\d+)E([+-])?(\d+)~i', $string, $matches)
+        ) {
             if ($matches[2] === '-') {
                 $decimals = \strlen($matches[1]) + (int) $matches[3];
             } else {
                 $decimals = 0;
             }
 
-            $string = number_format( $numeric, $decimals, '.', '');
+            if ($numeric instanceof InterfaceValueObject) {
+                $numeric = (float)$numeric->value();
+            } else {
+                $numeric = (float)$numeric;
+            }
+
+            $string = number_format($numeric, $decimals, '.', '');
         }
+
+        assert(is_numeric($string) && is_string($string));
 
         return $string;
     }
@@ -100,7 +113,7 @@ final class MathUtils
     {
         $value = self::numericToNumericString($value);
 
-        return ValueObjectNumeric::create($value)->round($precision, $mode)->getValue();
+        return ValueObjectNumeric::create($value)->round($precision, $mode)->value();
     }
 
     /**
@@ -144,19 +157,19 @@ final class MathUtils
      * (string) "16.5"      => "16.50"
      * (string) "16,5"      => "16.00" // wrong input
      *
-     * @param AbstractValueObject|float|int|string                               $value     <p>Value to be
+     * @param InterfaceValueObject|float|int|string $value <p>Value to be
      *                                                                                      formatted.</p>
-     * @param int                                                                $precision <p>Number of decimal
+     * @param int $precision <p>Number of decimal
      *                                                                                      places. (Default: 2, Auto:
      *                                                                                      -1)</p>
-     * @param bool                                                               $showMore  <p>Show all relevant
+     * @param bool $showMore <p>Show all relevant
      *                                                                                      decimal places if more
      *                                                                                      decimal places. exist than
      *                                                                                      specified. (Default:
      *                                                                                      false)</p>
      *
-     * @phpstan-param ''|numeric|AbstractValueObject<numeric>|ValueObjectNumeric $value
-     * @phpstan-param int                                                        $precision
+     * @phpstan-param ''|numeric|InterfaceValueObject<numeric>|ValueObjectNumeric $value
+     * @phpstan-param int $precision
      *
      * @return false|string
      */
@@ -187,7 +200,7 @@ final class MathUtils
         }
 
         if ($sendWarningOnError && !self::is_numeric($value)) {
-            trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value, \E_USER_WARNING);
+            trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . print_r($value, true) . ' | ' . print_r($valueOrig, true), \E_USER_WARNING);
 
             return false;
         }
@@ -198,7 +211,7 @@ final class MathUtils
             $value = (float) $value;
         } else {
             if ($sendWarningOnError) {
-                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, \E_USER_WARNING);
+                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . print_r($value, true) . ' | ' . print_r($valueOrig, true), \E_USER_WARNING);
             }
 
             return false;
@@ -227,7 +240,7 @@ final class MathUtils
         $result = $numberFormatter->format($value, NumberFormatter::TYPE_DOUBLE);
         if ($result === false) {
             if ($sendWarningOnError) {
-                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . $value . ' | ' . $valueOrig, \E_USER_WARNING);
+                trigger_error('Wrong input for "i18n_number_format()", please use a numeric value: ' . print_r($value, true) . ' | ' . print_r($valueOrig, true), \E_USER_WARNING);
             }
 
             return false;
@@ -241,13 +254,11 @@ final class MathUtils
      */
     public static function is_numeric_int($value, bool $checkForSpaces = false): bool
     {
+        $regex = '#^-?\d+$#';
+
         return self::is_numeric($value, $checkForSpaces)
                &&
-               (
-                   \is_int($value)
-                   ||
-                   ctype_digit((string) $value)
-               );
+               (!$checkForSpaces ? preg_match($regex, trim((string)$value, ' ')) : preg_match($regex, (string)$value));
     }
 
     /**

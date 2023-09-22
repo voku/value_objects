@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects\exceptions;
+namespace voku\ValueObjects\exceptions;
 
 use RuntimeException;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
-use voku\value_objects\utils\MathUtils;
+use voku\ValueObjects\utils\MathUtils;
 
 /**
- * @template TValue as int
+ * @template TValue as int|numeric-string
  *
  * @extends AbstractValueObject<TValue>
  *
@@ -18,7 +18,7 @@ class ValueObjectIdInt extends AbstractValueObject
     /**
      * {@inheritdoc}
      */
-    protected function parse($value)
+    protected function parseAfterValidation($value)
     {
         return (int) $value;
     }
@@ -34,6 +34,6 @@ class ValueObjectIdInt extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
 /**
- * @template TValue as string
- *
- * @extends AbstractValueObject<TValue>
+ * @extends AbstractValueObject<string>
  *
  * @immutable
  */
@@ -28,6 +26,6 @@ class ValueObjectIdUuid extends AbstractValueObject
             return false;
         }
 
-        return parent::validate($value);
+        return true;
     }
 }

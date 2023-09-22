@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace voku\value_objects;
+namespace voku\ValueObjects;
 
+use voku\helper\UTF8;
 use const ENT_QUOTES;
 use const ENT_SUBSTITUTE;
-use voku\helper\UTF8;
 
 /**
  * @immutable
@@ -18,7 +18,7 @@ final class ValueObjectHtmlEscape extends ValueObjectString
      *
      * @return static
      */
-    public static function create($value): self
+    public static function create($value): InterfaceValueObject
     {
         $value = UTF8::html_entity_decode((string) $value);
         $value = UTF8::htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE);

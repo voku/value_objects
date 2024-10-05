@@ -25,7 +25,7 @@
     "symfony/polyfill-php80": "1.*",
     "symfony/polyfill-ctype": "1.*",
     "phpstan/phpstan": "1.10.*",
-    "phpunit/phpunit": "9.6.*",
+    "phpunit/phpunit": "11.4.*",
     "php-cs-fixer/shim": "v3.27.*"
   },
   "autoload": {

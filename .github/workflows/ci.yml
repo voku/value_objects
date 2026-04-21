@@ -36,7 +36,7 @@ jobs:
 
       - name: Determine composer cache directory
         id: composer-cache
-        run: echo "::set-output name=directory::$(composer config cache-dir)"
+        run: echo "directory=$(composer config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
         uses: actions/cache@v5.0.5
@@ -56,7 +56,6 @@ jobs:
           php vendor/bin/phpunit -c phpunit.xml --coverage-clover=build/logs/clover.xml
 
       - name: Run phpstan
-        continue-on-error: true
         if: ${{ matrix.php == '8.2' }}
         run: |
           php vendor/bin/phpstan analyse

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace voku\ValueObjects;
 
 /**
- * @template TValue as int
+ * @template TValue of int
  * @extends AbstractValueObject<TValue>
  *
  * @immutable

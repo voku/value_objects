@@ -74,6 +74,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable, Inte
      */
     protected function parseBeforeValidation($value)
     {
+        /** @var TValue $value */
         return $value;
     }
 
@@ -112,6 +113,10 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable, Inte
         $object = unserialize($decrypted->toString(), ['allowed_classes' => [static::class]]);
         if ($object instanceof __PHP_Incomplete_Class) {
             throw new InvalidValueObjectException('Unserialized object "' . $decrypted->toString() . '" is not of type "' . static::class . '"');
+        }
+
+        if (!($object instanceof static)) {
+            throw new InvalidValueObjectException('Unserialized object is not of type "' . static::class . '"');
         }
 
         return $object;

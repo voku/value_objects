@@ -7,7 +7,7 @@ namespace voku\ValueObjects;
 use voku\ValueObjects\utils\MathUtils;
 
 /**
- * @template TValue as int|numeric-string
+ * @template TValue of int|numeric-string
  *
  * @extends AbstractValueObject<TValue>
  *

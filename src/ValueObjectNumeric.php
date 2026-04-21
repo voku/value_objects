@@ -224,6 +224,7 @@ final class ValueObjectNumeric extends AbstractValueObject
             trigger_error('scale error: ' . $func . '|' . print_r($args, true), \E_USER_WARNING);
         }
 
+        /** @var numeric-string $result */
         return $result;
     }
 

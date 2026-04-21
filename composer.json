@@ -18,7 +18,7 @@
     "ext-intl": "*",
     "ext-json": "*",
     "voku/email-check": "~3.1.0",
-    "voku/portable-utf8": "~6.0.13",
+    "voku/portable-utf8": "~6.1.0",
     "voku/stringy": "~6.5.3"
   },
   "require-dev": {

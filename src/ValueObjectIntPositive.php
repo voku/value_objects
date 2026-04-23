@@ -22,6 +22,11 @@ final class ValueObjectIntPositive extends ValueObjectInt
             return false;
         }
 
+        /* @phpstan-ignore smallerOrEqual.alwaysFalse */
+        if ($value <= 0) {
+            return false;
+        }
+
         return true;
     }
 }

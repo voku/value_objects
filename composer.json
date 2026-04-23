@@ -18,15 +18,15 @@
     "ext-intl": "*",
     "ext-json": "*",
     "voku/email-check": "~3.1.0",
-    "voku/portable-utf8": "~6.0.13",
-    "voku/stringy": "~6.5.3"
+    "voku/portable-utf8": "~6.1.0",
+    "voku/stringy": "~7.0.0"
   },
   "require-dev": {
     "symfony/polyfill-php80": "1.*",
     "symfony/polyfill-ctype": "1.*",
     "phpstan/phpstan": "2.1.*",
     "phpunit/phpunit": "9.6.*",
-    "php-cs-fixer/shim": "v3.27.*"
+    "php-cs-fixer/shim": "v3.95.*"
   },
   "autoload": {
     "psr-4": {

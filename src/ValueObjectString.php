@@ -195,6 +195,7 @@ class ValueObjectString extends AbstractValueObject
      */
     protected function validate($value): bool
     {
+        /* @phpstan-ignore function.alreadyNarrowedType */
         if (!\is_string($value)) {
             return false;
         }

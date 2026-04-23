@@ -64,6 +64,7 @@ abstract class AbstractValueObject implements Stringable, JsonSerializable, Inte
             throw new InvalidValueObjectException('The value "' . print_r($value ?? 'NULL', true) . '" is not correct for: ' . static::class);
         }
 
+        /* @phpstan-ignore property.readOnlyByPhpDocAssignNotInConstructor */
         $this->value = $this->parseAfterValidation($value);
     }
 

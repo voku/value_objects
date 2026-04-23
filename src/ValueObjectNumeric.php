@@ -55,6 +55,7 @@ final class ValueObjectNumeric extends AbstractValueObject
     /**
      * @phpstan-var 0|positive-int
      */
+    /* @phpstan-ignore property.uninitializedReadonlyByPhpDoc */
     private int $scale;
 
     /**
@@ -91,6 +92,7 @@ final class ValueObjectNumeric extends AbstractValueObject
 
         $return = parent::create(self::filterNumeric($value));
 
+        /* @phpstan-ignore property.readOnlyByPhpDocAssignNotInConstructor */
         $return->scale = $scale;
 
         return $return;
@@ -208,6 +210,7 @@ final class ValueObjectNumeric extends AbstractValueObject
         ob_start();
         $result = \call_user_func_array($func, $args);
         $error = ob_get_flush();
+        /* @phpstan-ignore if.alwaysFalse */
         if ($error) {
             throw new ValueObjectNumericException($error);
         }

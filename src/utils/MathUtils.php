@@ -17,7 +17,7 @@ use function round;
 final class MathUtils
 {
     /**
-     * @param numeric|ValueObjectInt|ValueObjectNumeric $numeric
+     * @param numeric|ValueObjectInt<int>|ValueObjectNumeric $numeric
      */
     public static function numberOfDecimals($numeric, bool $removeRightZero = false): int
     {
@@ -49,7 +49,7 @@ final class MathUtils
     }
 
     /**
-     * @param numeric|ValueObjectInt|ValueObjectNumeric $numeric
+     * @param numeric|ValueObjectInt<int>|ValueObjectNumeric $numeric
      *
      * @return numeric-string
      */
@@ -80,7 +80,7 @@ final class MathUtils
             $string = number_format($numeric, $decimals, '.', '');
         }
 
-        assert(is_numeric($string) && is_string($string));
+        assert(is_numeric($string));
 
         return $string;
     }
@@ -102,7 +102,7 @@ final class MathUtils
     }
 
     /**
-     * @param numeric|ValueObjectInt|ValueObjectNumeric $value
+     * @param numeric|ValueObjectInt<int>|ValueObjectNumeric $value
      *
      * @return numeric-string
      *

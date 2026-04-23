@@ -17,12 +17,8 @@ final class ValueObjectIntPositive extends ValueObjectInt
      */
     protected function validate($value): bool
     {
+        /* @phpstan-ignore function.alreadyNarrowedType */
         if (!\is_int($value)) {
-            return false;
-        }
-
-        /* @phpstan-ignore-next-line | always false in theory */
-        if ($value <= 0) {
             return false;
         }
 

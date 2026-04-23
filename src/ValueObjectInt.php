@@ -37,6 +37,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function add($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_ADD, $num));
     }
 
@@ -120,6 +121,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function sub($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_SUB, $num));
     }
 
@@ -130,6 +132,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function mul($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_MUL, $num));
     }
 
@@ -140,6 +143,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function div($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_DIV, $num));
     }
 
@@ -150,6 +154,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function pow($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_POW, $num));
     }
 
@@ -161,6 +166,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function powmod($num, $mod): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_POWMOD, $num, $mod));
     }
 
@@ -169,6 +175,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function sqrt(): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_SQRT, null));
     }
 
@@ -179,6 +186,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     public function mod($num): self
     {
+        /* @phpstan-ignore return.type */
         return self::create($this->performOperation(self::OPERATION_MOD, $num));
     }
 
@@ -242,6 +250,7 @@ class ValueObjectInt extends AbstractValueObject
      */
     protected function validate($value): bool
     {
+        /* @phpstan-ignore function.alreadyNarrowedType */
         if (!\is_int($value)) {
             return false;
         }

@@ -69,7 +69,7 @@ final class ValueObjectNumeric extends AbstractValueObject
         string $activeLocale = 'en-US',
         int $scale = 10
     ): self {
-        $valueParsed = MathUtils::i18n_number_parse($value, $activeLocale, null);
+        $valueParsed = MathUtils::i18n_number_parse($value, $activeLocale, null, false);
         if ($valueParsed === null) {
             throw new InvalidValueObjectException('could not parse value: ' . $value . ' | locale: ' . $activeLocale);
         }

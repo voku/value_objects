@@ -511,4 +511,79 @@ final class ValueObjectNumericTest extends TestCase
         static::assertSame('1.1', MathUtils::i18n_number_parse((string) 1.10));
         static::assertSame('1.1', MathUtils::i18n_number_parse((string) 1.100));
     }
+
+    public function testComparisons(): void
+    {
+        $num = ValueObjectNumeric::create('10.5');
+
+        static::assertTrue($num->isEquals('10.5'));
+        static::assertFalse($num->isEquals('10.6'));
+        static::assertTrue($num->isGreaterThan('10.4'));
+        static::assertFalse($num->isGreaterThan('10.6'));
+        static::assertTrue($num->isLessThan('10.6'));
+        static::assertFalse($num->isLessThan('10.4'));
+        static::assertTrue($num->isGreaterOrEquals('10.5'));
+        static::assertTrue($num->isGreaterOrEquals('10.4'));
+        static::assertFalse($num->isGreaterOrEquals('10.6'));
+        static::assertTrue($num->isLessOrEquals('10.5'));
+        static::assertTrue($num->isLessOrEquals('10.6'));
+        static::assertFalse($num->isLessOrEquals('10.4'));
+        static::assertSame(10.5, $num->toFloat());
+    }
+
+    public function testI18nNumberParse(): void
+    {
+        $num = ValueObjectNumeric::i18n_number_parse('16.5', 'en-US');
+        static::assertSame('16.5', $num->value());
+
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        ValueObjectNumeric::i18n_number_parse('notanumber', 'en-US');
+    }
+
+    public function testNegativeScaleFail(): void
+    {
+        $this->expectException('voku\ValueObjects\exceptions\InvalidValueObjectException');
+        $this->expectExceptionMessage('$scale can\'t be less than 0');
+        ValueObjectNumeric::create('1.5', -1);
+    }
+
+    public function testIsNumeric(): void
+    {
+        static::assertTrue(MathUtils::is_numeric('1.5'));
+        static::assertFalse(MathUtils::is_numeric('abc'));
+        static::assertFalse(MathUtils::is_numeric(' 1.5', true));
+        static::assertTrue(MathUtils::is_numeric(' 1.5', false));
+    }
+
+    public function testIsNumericInt(): void
+    {
+        static::assertTrue(MathUtils::is_numeric_int('42'));
+        static::assertTrue(MathUtils::is_numeric_int('-42'));
+        static::assertFalse(MathUtils::is_numeric_int('42.5'));
+        static::assertFalse(MathUtils::is_numeric_int('abc'));
+        static::assertTrue(MathUtils::is_numeric_int(' 42', false));
+        static::assertFalse(MathUtils::is_numeric_int(' 42', true));
+    }
+
+    public function testAntiXss(): void
+    {
+        static::assertSame('Hello World', MathUtils::anti_xss('Hello World'));
+        static::assertSame('Hello &amp; World', MathUtils::anti_xss('Hello & World', true));
+        static::assertSame('Hello & World', MathUtils::anti_xss('Hello & World', false));
+        static::assertSame('', MathUtils::anti_xss('<script>alert(1)</script>', true));
+    }
+
+    public function testNumberOfDecimals(): void
+    {
+        static::assertSame(0, MathUtils::numberOfDecimals(42));
+        static::assertSame(2, MathUtils::numberOfDecimals('1.50'));
+        static::assertSame(1, MathUtils::numberOfDecimals('1.50', true));
+        static::assertSame(0, @MathUtils::numberOfDecimals('notanumber'));
+
+        $int = \voku\ValueObjects\ValueObjectInt::create(5);
+        static::assertSame(0, MathUtils::numberOfDecimals($int));
+
+        $numericObj = ValueObjectNumeric::create('1.50');
+        static::assertSame(2, MathUtils::numberOfDecimals($numericObj));
+    }
 }

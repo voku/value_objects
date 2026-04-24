@@ -5,7 +5,7 @@
 ### 0.2.0 (2026-04-24)
 
 **Breaking changes:**
-- moved source namespace from `voku\value_objects` to the root namespace (e.g. `use voku\ValueObjectString`)
+- moved source namespace from `voku\value_objects` to the root namespace (e.g. `use voku\ValueObjects`)
 - added `InterfaceValueObject` interface that all value objects now implement
 - renamed `ValueObjectCurrency` to `ValueObjectCurrencyCode`
 - renamed `ValueObjectVat` to `ValueObjectVatPercentage`
